@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Audio</title>
+</head>
+<body>
+
+
+<audio controls src="../assets/man_song.ogg"></audio>
+<p>
+	<code>controls</code> : tells the browser to display common user controls
+</p>
+
+<audio controls>
+	<source src="../assets/man_song.ogg"></source>
+	<source src="../assets/man_song.mp3"></source>
+</audio>
+<p>
+	<code>source</code>: allows the browser to choose which source best suits
+</p>
+
+<audio autoplay controls>
+	<source src="../assets/man_song.ogg"></source>
+	<source src="../assets/man_song.mp3"></source>
+</audio>
+<p>
+	<code>autoplay</code>: play as soon as loaded
+</p>
+
+</body>
+</html>
