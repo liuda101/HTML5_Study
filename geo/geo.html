@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>geo tracker</title>
+</head>
+<body>
+
+<h1>Geolocation Tracker</h1>
+
+<h2>Current position:</h2>
+<table>
+	<tr>
+		<td width="40">Latitude: </td>
+		<td width="200" id="latitude"></td>
+	</tr>
+	<tr>
+		<td width="40">Longitude: </td>
+		<td width="200" id="longitude"></td>
+	</tr>
+	<tr>
+		<td>Accuracy: </td>
+		<td id="accuracy"></td>
+	</tr>
+	<tr>
+		<td>Last timestamp: </td>
+		<td id="timestamp"></td>
+	</tr>
+</table>
+
+<h4 id="currDist">Current distance traveled: 0.0 km</h4>
+<h4 id="totalDist">Total distance traveled: 0.0 km</h4>
+
+<script>
+(function(){
+	var totalDistance = 0.0;
+	var lastLat, lastLong;
+
+	function toRadians(degree){
+		return degree * Math.PI / 180;
+	}
+
+	function distance(lat1, long1, lat2, long2){
+		var R = 6371;
+		var deltaLat = toRadians(lat2 - lat1);
+		var deltaLong = toRadians(long2 - long1);
+		lat1 = toRadians(lat1);
+		lat2 = toRadians(lat2);
+
+		var a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) + 
+			Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLong/2) * Math.sin(deltaLong / 2);
+
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		var d = R * c;
+		return d;
+	}
+
+
+	function updateLocation(position){
+		var lat = position.coords.latitude;
+		var lon = position.coords.longitude;
+		var accuracy = position.coords.accuracy;
+		var timestamp = position.timestamp;
+
+		document.getElementById('latitude').innerHTML = lat;
+		document.getElementById('longitude').innerHTML = lon;
+		document.getElementById('accuracy').innerHTML = accuracy;
+		document.getElementById('timestamp').innerHTML = timestamp;
+
+		if(lastLat && lastLong){
+			var currentDistance = distance(lat, lon, lastLat, lastLong);
+
+			totalDistance += currentDistance;
+
+			document.getElementById('currDist').innerHTML = 'Current distance traveled: ' + currentDistance.toFixed(4) + 'km';
+
+			document.getElementById('totalDist').innerHTML = 'Total distance traveled: ' + totalDistance.toFixed(4) + 'km';
+		}
+
+		lastLat = lat;
+		lastLong = lon;
+	}
+
+	function handleLocationError(error){
+		console.log(error);
+	}
+
+	var geo = navigator.geolocation;
+	if(geo){
+		geo.watchPosition(updateLocation, handleLocationError, {maximumAge: 20000});
+	}
+})();
+</script>
+</body>
+</html>
