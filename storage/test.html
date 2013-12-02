@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test storage event</title>
+<meta charset="utf-8">
+</head>
+<body>
+<script>
+	window.addEventListener('storage', function(e){
+		console.log(e);
+	}, true);
+	setTimeout(function(){
+		console.log('begin set');
+		window.localStorage.setItem('abc', 'test');
+	},3000);
+</script>
+</body>
+</html>
