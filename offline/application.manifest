@@ -1,0 +1,16 @@
+#comments begin with the hash symbol
+CACHE MANIFEST
+# files to cache
+test.html
+test.js
+test.css
+test.gif
+
+
+#do not cache signup page
+NETWORK
+signup.html
+
+FALLBACK
+signup.html offline.html
+/app/ajax/ default.html
